@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="691.0" prefWidth="1011.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemFormcontroller">
+   <children>
+      <JFXTreeTableView fx:id="itemtbl" layoutX="41.0" layoutY="160.0" prefHeight="465.0" prefWidth="877.0">
+         <columns>
+            <TreeTableColumn fx:id="colcode" prefWidth="155.0" text="Code" />
+            <TreeTableColumn fx:id="coldescription" prefWidth="167.0" text="Description" />
+            <TreeTableColumn fx:id="colunitprice" prefWidth="173.0" text="Unit price" />
+            <TreeTableColumn fx:id="colqty" prefWidth="180.0" text="QTY" />
+            <TreeTableColumn fx:id="coloption" prefWidth="199.0" text="Option" />
+         </columns>
+      </JFXTreeTableView>
+      <JFXTextField fx:id="txtCode" layoutX="41.0" layoutY="65.0" />
+      <JFXTextField fx:id="txtDescription" layoutX="235.0" layoutY="65.0" />
+      <JFXTextField fx:id="txtunitprice" layoutX="451.0" layoutY="65.0" />
+      <JFXTextField fx:id="txtqty" layoutX="652.0" layoutY="65.0" />
+      <JFXButton layoutX="853.0" layoutY="28.0" onAction="#savebtnOnAction" prefHeight="31.0" prefWidth="69.0" text="Save" />
+      <JFXButton layoutX="853.0" layoutY="65.0" onAction="#updatebtnOnAction" text="Update" />
+   </children>
+</AnchorPane>
