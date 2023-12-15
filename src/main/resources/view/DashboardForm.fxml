@@ -22,6 +22,9 @@
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
-      <JFXButton layoutX="146.0" layoutY="292.0" onAction="#placeOrderButton" prefHeight="103.0" prefWidth="207.0" text="Place Order" />
+      <JFXButton layoutX="146.0" layoutY="292.0" onAction="#placeOrderButton" prefHeight="103.0" prefWidth="207.0" style="-fx-background-color: white;" text="Place Order">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font></JFXButton>
    </children>
 </AnchorPane>

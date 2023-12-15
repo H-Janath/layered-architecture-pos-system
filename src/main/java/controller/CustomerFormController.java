@@ -1,5 +1,10 @@
 package controller;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import db.DBConnection;
+import dto.tm.ItemTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import dto.CustomerDto;
@@ -17,10 +23,17 @@ import model.impl.CustomerModelImpl;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 
 public class CustomerFormController{
 
+    public TreeTableColumn colid;
+    public JFXTreeTableView<CustomerTm> tblCustomer;
+    public TreeTableColumn colname;
+    public TreeTableColumn coladdress;
+    public TreeTableColumn colsalary;
+    public TreeTableColumn coloption;
     @FXML
     private TextField txt_id;
 
@@ -32,36 +45,26 @@ public class CustomerFormController{
 
     @FXML
     private TextField txt_address;
+    
 
-    @FXML
-    private TableView<CustomerTm> tblCustomer;
-
-    @FXML
-    private TableColumn colid;
-
-    @FXML
-    private TableColumn colname;
-
-    @FXML
-    private TableColumn coladdress;
-
-    @FXML
-    private TableColumn colsalary;
-
-    @FXML
-    private TableColumn coloption;
     private CustomerModel customermodel = new CustomerModelImpl();
 
     public void initialize() {
-        colid.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colname.setCellValueFactory(new PropertyValueFactory<>("name"));
-        coladdress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colsalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-        coloption.setCellValueFactory(new PropertyValueFactory<>("btn"));
+        colid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
+        colname.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+        coladdress.setCellValueFactory(new TreeItemPropertyValueFactory<>("address"));
+        colsalary.setCellValueFactory(new TreeItemPropertyValueFactory<>("salary"));
+        coloption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
         loadCustomerTable();
 
-        tblCustomer.getSelectionModel().selectedItemProperty().addListener((observableValue, oldvalue, newvalue) ->{
-               setData(newvalue);
+        tblCustomer.setOnMouseClicked(event -> {
+            if(event.getClickCount()==1&&(!tblCustomer.getSelectionModel().isEmpty())){
+                TreeItem<CustomerTm> customer = tblCustomer.getSelectionModel().getSelectedItem();
+                txt_id.setText(customer.getValue().getId());
+                txt_address.setText(customer.getValue().getAddress());
+                txt_name.setText(customer.getValue().getName());
+                txt_salary.setText(String.valueOf(customer.getValue().getSalary()));
+            }
         });
     }
 
@@ -76,27 +79,26 @@ public class CustomerFormController{
     }
 
     private void loadCustomerTable() {
-        ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
-        String sql = "select * from customer";
+        ObservableList<CustomerTm> tmlist = FXCollections.observableArrayList();
         try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet result = stm.executeQuery(sql);
-
-            while (result.next()) {
-                Button btn = new Button("Delete");
-                CustomerTm c1 = new CustomerTm(
-                        result.getString(1),
-                        result.getString(2),
-                        result.getString(3),
-                        result.getDouble(4),
+            List<CustomerDto> customerDtos = customermodel.allCustomers();
+            for(CustomerDto customerDto:customerDtos){
+                Button btn = new Button("delete");
+                tmlist.add(new CustomerTm(
+                        customerDto.getId(),
+                        customerDto.getName(),
+                        customerDto.getAddress(),
+                        customerDto.getSalary(),
                         btn
-                );
-                btn.setOnAction(actionEvent -> {
-                    deleteCustomer(c1.getId());
+                ));
+                btn.setOnAction(actionEven->{
+                    deleteCustomer(customerDto.getId());
                 });
-                tmList.add(c1);
             }
-            tblCustomer.setItems(tmList);
+            TreeItem<CustomerTm> treeItem= new RecursiveTreeItem<>(tmlist, RecursiveTreeObject::getChildren);
+            tblCustomer.setRoot(treeItem);
+            tblCustomer.setShowRoot(false);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -104,14 +106,13 @@ public class CustomerFormController{
         }
     }
 
-    private void deleteCustomer(String code) {
+
+    private void deleteCustomer(String id) {
         String sql = "delete from customer where id=?";
 
         try {
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1,code);
-            int result = pstm.executeUpdate();
-            if(result>0){
+            boolean result = customermodel.deleteCustomer(id);
+            if(result){
                 new Alert(Alert.AlertType.INFORMATION,"Customer deleted").show();
                 loadCustomerTable();
             }else {
@@ -143,60 +144,58 @@ public class CustomerFormController{
 
     @FXML
     void saveButtonOnAction(ActionEvent event) {
-        if(txt_id.getText()!=null&txt_address.getText()!=null&txt_name.getText()!=null&txt_salary.getText()!=null){
-        CustomerDto c =  new CustomerDto(txt_id.getText(),
-                txt_name.getText(),
-                txt_address.getText(),
-                Double.parseDouble(txt_salary.getText())
-        );
-
-        String sql = "insert into customer value('"+c.getId()+"','"+c.getName()+"','"+c.getAddress()+"',"+c.getSalary()+")";
+        if(!isEmpty()){
         try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            int result = stm.executeUpdate(sql);
-            if(result>0){
-                new Alert(Alert.AlertType.INFORMATION,"Customer Saved").show();
+            boolean isSaved = customermodel.saveCustomer(new CustomerDto(txt_id.getText(),
+                    txt_name.getText(),
+                    txt_address.getText(),
+                    Double.parseDouble(txt_salary.getText())
+            ));
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Successfull").show();
                 loadCustomerTable();
                 clearFields();
+            }else{
+                new Alert(Alert.AlertType.ERROR,"Empty").show();
             }
         }catch (SQLIntegrityConstraintViolationException ex){
             new Alert(Alert.AlertType.ERROR,"Duplicate Entity").show();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        }}
-
-    public void tableOnaction(MouseEvent mouseEvent) {
+        }else{
+            new Alert(Alert.AlertType.ERROR,"Empty field found").show();
+        }
     }
 
-    public void updateButtonOnAction(ActionEvent actionEvent) {
-        CustomerDto c =  new CustomerDto(txt_id.getText(),
-                txt_name.getText(),
-                txt_address.getText(),
-                Double.parseDouble(txt_salary.getText())
-        );
-        String sql = "update customer set name='"+c.getName()+"',address='"+c.getAddress()+"',salary="+c.getSalary()+"where id='"+c.getId()+"'";
-        try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            int result = stm.executeUpdate(sql);
-            if(result>0){
-                new Alert(Alert.AlertType.INFORMATION,"Customer Saved").show();
-                loadCustomerTable();
-                clearFields();
-            }
-        }catch (SQLIntegrityConstraintViolationException ex){
-            new Alert(Alert.AlertType.ERROR,"Duplicate Entity").show();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
+
+    public void updateButtonOnAction(ActionEvent actionEvent) {
+        if(!isEmpty()) {
+            CustomerDto c = new CustomerDto(txt_id.getText(),
+                    txt_name.getText(),
+                    txt_address.getText(),
+                    Double.parseDouble(txt_salary.getText())
+            );
+            String sql = "update customer set name='" + c.getName() + "',address='" + c.getAddress() + "',salary=" + c.getSalary() + "where id='" + c.getId() + "'";
+            try {
+                Statement stm = DBConnection.getInstance().getConnection().createStatement();
+                int result = stm.executeUpdate(sql);
+                if (result > 0) {
+                    new Alert(Alert.AlertType.INFORMATION, "Update successfully").show();
+                    loadCustomerTable();
+                    clearFields();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            new Alert(Alert.AlertType.ERROR,"Empty field found").show();
+        }
     }
 
     public void backBtnOnAction(ActionEvent actionEvent) {
@@ -207,5 +206,14 @@ public class CustomerFormController{
             throw new RuntimeException(e);
         }
         stage.show();
+    }
+    private  boolean isEmpty(){
+        if((txt_name.getText().isEmpty()||txt_id.getText().isEmpty()
+                ||txt_salary.getText().isEmpty()||txt_address.getText().isEmpty())){
+            return true;
+        }else {
+            return false;
+        }
+
     }
 }

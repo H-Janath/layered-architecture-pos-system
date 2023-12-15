@@ -1,8 +1,9 @@
 package dto.tm;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.scene.control.Button;
 
-public class CustomerTm {
+public class CustomerTm extends RecursiveTreeObject<CustomerTm> {
     private String id;
     private String name;
     private String address;
@@ -70,4 +71,6 @@ public class CustomerTm {
     public void setBtn(Button btn) {
         this.btn = btn;
     }
+
+
 }
