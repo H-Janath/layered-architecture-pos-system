@@ -23,8 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import dto.tm.ItemTm;
 
-import model.ItemModel;
-import model.impl.ItemModelImpl;
+import dao.ItemModel;
+import dao.impl.ItemModelImpl;
 
 import java.io.IOException;
 import java.sql.*;
