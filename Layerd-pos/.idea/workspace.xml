@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3c3aeb96-a501-4c3b-8263-9b5c66391b5c" name="Changes" comment="finalized project" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaFXApplication" />
+        <option value="Interface" />
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;H-Janath&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="3ea3d0c1-2cfc-4249-8907-0d90ad1ebaf8" />
+        <option name="url" value="https://github.com/H-Janath/Stand-Alone-Application-Developmen" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2YN6bTtEK7rTp5KOYWuReQOE4m5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.maven-pos-day01 [javafx:run].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "E:/Working directory/maven-pos/maven-pos-day01/src/main/java",
+    "last_opened_file_path": "E:/Working directory/Layerd-pos",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.1484375",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="dto.OrderDetailsDto" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Working directory\maven-pos\maven-pos-day01\src\main\java\controller" />
+      <recent name="E:\Working directory\maven-pos\maven-pos-day01\src\main\resources\img" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install -Dmaven.plugin.validation=VERBOSE" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Maven.maven-pos-day01 [javafx:run]">
+    <configuration name="Appinitializer" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Appinitializer" />
+      <module name="maven-pos-day01" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="maven-pos-day01 [javafx:run]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="javafx:run" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Appinitializer" />
+      <item itemvalue="Maven.maven-pos-day01 [javafx:run]" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-11.0.21-corretto-11.0.21-3183f394aec4-d55de845" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c3aeb96-a501-4c3b-8263-9b5c66391b5c" name="Changes" comment="" />
+      <created>1700353763120</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700353763120</updated>
+      <workItem from="1700353764687" duration="135000" />
+      <workItem from="1700353910067" duration="308000" />
+      <workItem from="1700354816968" duration="1720000" />
+      <workItem from="1700358866291" duration="9884000" />
+      <workItem from="1700387416206" duration="15347000" />
+      <workItem from="1700699724400" duration="7662000" />
+      <workItem from="1700710978545" duration="5839000" />
+      <workItem from="1700720627515" duration="3015000" />
+      <workItem from="1700729551102" duration="3115000" />
+      <workItem from="1700737045324" duration="4981000" />
+      <workItem from="1700752781382" duration="5967000" />
+      <workItem from="1700785406942" duration="5711000" />
+      <workItem from="1700796781725" duration="975000" />
+      <workItem from="1700798257817" duration="1976000" />
+      <workItem from="1700808344815" duration="6397000" />
+      <workItem from="1700841182630" duration="202000" />
+      <workItem from="1700872651760" duration="1019000" />
+      <workItem from="1701318412070" duration="786000" />
+      <workItem from="1701338473297" duration="10580000" />
+      <workItem from="1701353392827" duration="7391000" />
+      <workItem from="1701400676806" duration="1430000" />
+      <workItem from="1701586128202" duration="866000" />
+      <workItem from="1701592978910" duration="33000" />
+      <workItem from="1701593022551" duration="992000" />
+      <workItem from="1701662551249" duration="6895000" />
+      <workItem from="1701872319093" duration="1469000" />
+      <workItem from="1701874019314" duration="1517000" />
+      <workItem from="1701956311993" duration="543000" />
+      <workItem from="1701956939295" duration="4093000" />
+      <workItem from="1701988914774" duration="7753000" />
+      <workItem from="1702122132599" duration="3893000" />
+      <workItem from="1702257492262" duration="5417000" />
+      <workItem from="1702525138619" duration="13266000" />
+      <workItem from="1702547803283" duration="1372000" />
+      <workItem from="1702554239209" duration="3375000" />
+      <workItem from="1702560550208" duration="7939000" />
+      <workItem from="1702604898527" duration="5410000" />
+      <workItem from="1702614799499" duration="10786000" />
+      <workItem from="1702630612966" duration="16368000" />
+      <workItem from="1702651549508" duration="3314000" />
+      <workItem from="1702655105860" duration="9729000" />
+      <workItem from="1702919606747" duration="701000" />
+      <workItem from="1702920987210" duration="6000" />
+      <workItem from="1702950156660" duration="2021000" />
+      <workItem from="1702956766781" duration="850000" />
+      <workItem from="1702966640236" duration="606000" />
+      <workItem from="1703001680898" duration="596000" />
+      <workItem from="1703033364311" duration="5499000" />
+      <workItem from="1703093613277" duration="407000" />
+      <workItem from="1703094037239" duration="560000" />
+    </task>
+    <task id="LOCAL-00001" summary="first commit">
+      <option name="closed" value="true" />
+      <created>1701663408196</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1701663408196</updated>
+    </task>
+    <task id="LOCAL-00002" summary="create itemmodel">
+      <option name="closed" value="true" />
+      <created>1702654482191</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702654482192</updated>
+    </task>
+    <task id="LOCAL-00003" summary="create itemmodel">
+      <option name="closed" value="true" />
+      <created>1702663670901</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702663670901</updated>
+    </task>
+    <task id="LOCAL-00004" summary="create itemmodel">
+      <option name="closed" value="true" />
+      <created>1703035609806</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1703035609806</updated>
+    </task>
+    <task id="LOCAL-00005" summary="create itemmodel">
+      <option name="closed" value="true" />
+      <created>1703037395565</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1703037395565</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first commit" />
+    <MESSAGE value="create itemmodel" />
+    <option name="LAST_COMMIT_MESSAGE" value="create itemmodel" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
