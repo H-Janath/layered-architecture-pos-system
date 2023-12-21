@@ -4,14 +4,9 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.mysql.cj.x.protobuf.MysqlxCrud;
-import com.sun.source.tree.Tree;
-import db.DBConnection;
 import dto.OrderDetailsDto;
-import dto.OrderDto;
 import dto.tm.OrderDetailsTm;
 import dto.tm.OrderDto2;
-import dto.tm.OrderTm;
 import dto.tm.OrderTm2;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,15 +19,13 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
-import dao.OrderDetailsModel;
-import dao.OrderModel;
-import dao.impl.OrderDetailsModelImpl;
-import dao.impl.OrderModelImpl;
+import dao.Custom.OrderDetailsDao;
+import dao.Custom.OrderDao;
+import dao.Custom.impl.OrderDetailsDaoImpl;
+import dao.Custom.impl.OrderDaoImpl;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -48,12 +41,14 @@ public class OrderDetailsFormController {
     public TreeTableColumn colorderdetailsitemcode;
     public TreeTableColumn colorderdetailsqty;
     public TreeTableColumn colOrderdetailsUnitPrice;
-    OrderDetailsModel orderDetailsModel = new OrderDetailsModelImpl();
-    OrderModel orderModel = new OrderModelImpl();
+    OrderDetailsDao orderDetailsDao = new OrderDetailsDaoImpl();
+    OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
         colorderid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
         colcustomerId.setCellValueFactory(new TreeItemPropertyValueFactory<>("date"));
         colcustomerId.setCellValueFactory(new TreeItemPropertyValueFactory<>("customerId"));
+
+        //Order details table column
         colorderdetailsid.setCellValueFactory(new TreeItemPropertyValueFactory<>("OrderId"));
         colorderdetailsitemcode.setCellValueFactory(new TreeItemPropertyValueFactory<>("itemCode"));
         colorderdetailsqty.setCellValueFactory(new TreeItemPropertyValueFactory<>("qty"));
@@ -67,7 +62,7 @@ public class OrderDetailsFormController {
                 TreeItem<OrderTm2> item = orderTbl.getSelectionModel().getSelectedItem();
                 try {
                     ObservableList<OrderDetailsTm> tmList = FXCollections.observableArrayList();
-                    List<OrderDetailsDto> dtoList = orderDetailsModel.getOrderDetails(item.getValue().getId());
+                    List<OrderDetailsDto> dtoList = orderDetailsDao.getOrderDetails(item.getValue().getId());
                     for(OrderDetailsDto dto:dtoList){
                         tmList.add(
                                 new OrderDetailsTm(
@@ -105,7 +100,7 @@ public class OrderDetailsFormController {
     private void loadOrderTable() {
         ObservableList<OrderTm2> tmList = FXCollections.observableArrayList();
         try {
-            List<OrderDto2> dtolist = orderModel.allOrders();
+            List<OrderDto2> dtolist = orderDao.allOrders();
             for(OrderDto2 orderTm2:dtolist){
                 tmList.add(
                         new OrderTm2(

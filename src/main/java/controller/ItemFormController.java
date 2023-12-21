@@ -23,8 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import dto.tm.ItemTm;
 
-import dao.ItemModel;
-import dao.impl.ItemModelImpl;
+import dao.Custom.ItemDao;
+import dao.Custom.impl.ItemDaoImpl;
 
 import java.io.IOException;
 import java.sql.*;
@@ -67,7 +67,7 @@ public class ItemFormController {
 
     @FXML
     private JFXTextField txtUnitPrice;
-    ItemModel itemDao =new ItemModelImpl();
+    ItemDao itemDao =new ItemDaoImpl();
 
     public void initialize(){
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));

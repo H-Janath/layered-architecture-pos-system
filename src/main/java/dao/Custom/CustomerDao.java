@@ -1,17 +1,17 @@
-package dao;
+package dao.Custom;
 
+import dao.CrudDao;
 import dto.CustomerDto;
-import dto.tm.CustomerTm;
-import javafx.collections.ObservableList;
+import entity.Customer;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CustomerModel {
-    boolean saveCustomer(CustomerDto dto) throws ClassNotFoundException, SQLException;
+public interface CustomerDao extends CrudDao<Customer> {
+    /*boolean saveCustomer(CustomerDto dto) throws ClassNotFoundException, SQLException;
     boolean updateCustomer(CustomerDto dto) throws SQLException, ClassNotFoundException;
     boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException;
     List<CustomerDto> allCustomers() throws SQLException, ClassNotFoundException;
-    CustomerDto searchCustomer(String id);
+    CustomerDto searchCustomer(String id);*/
 
 }

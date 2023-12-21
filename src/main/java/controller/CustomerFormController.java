@@ -1,4 +1,6 @@
 package controller;
+import bo.custom.CustomerBo;
+import bo.custom.impl.CustomerBoimpl;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -14,8 +16,8 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.Stage;
 import dto.CustomerDto;
 import dto.tm.CustomerTm;
-import dao.CustomerModel;
-import dao.impl.CustomerModelImpl;
+import dao.Custom.CustomerDao;
+import dao.Custom.impl.CustomerDaoImpl;
 
 import java.io.IOException;
 import java.sql.*;
@@ -41,9 +43,9 @@ public class CustomerFormController{
 
     @FXML
     private TextField txt_address;
-    
 
-    private CustomerModel customermodel = new CustomerModelImpl();
+
+    private CustomerBo<CustomerDto> customerBo = new CustomerBoimpl();
 
     public void initialize() {
         colid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
@@ -77,7 +79,7 @@ public class CustomerFormController{
     private void loadCustomerTable() {
         ObservableList<CustomerTm> tmlist = FXCollections.observableArrayList();
         try {
-            List<CustomerDto> customerDtos = customermodel.allCustomers();
+            List<CustomerDto> customerDtos = customerBo.allCustomer();
             for(CustomerDto customerDto:customerDtos){
                 Button btn = new Button("delete");
                 tmlist.add(new CustomerTm(
@@ -107,7 +109,7 @@ public class CustomerFormController{
         String sql = "delete from customer where id=?";
 
         try {
-            boolean result = customermodel.deleteCustomer(id);
+            boolean result = customerBo.deleteCustomer(id);
             if(result){
                 new Alert(Alert.AlertType.INFORMATION,"Customer deleted").show();
                 loadCustomerTable();
@@ -141,26 +143,26 @@ public class CustomerFormController{
     @FXML
     void saveButtonOnAction(ActionEvent event) {
         if(!isEmpty()){
-        try {
-            boolean isSaved = customermodel.saveCustomer(new CustomerDto(txt_id.getText(),
-                    txt_name.getText(),
-                    txt_address.getText(),
-                    Double.parseDouble(txt_salary.getText())
-            ));
-            if (isSaved) {
-                new Alert(Alert.AlertType.INFORMATION, "Successfull").show();
-                loadCustomerTable();
-                clearFields();
-            }else{
-                new Alert(Alert.AlertType.ERROR,"Empty").show();
+            try {
+                boolean isSaved = customerBo.saveCustomer(new CustomerDto(txt_id.getText(),
+                        txt_name.getText(),
+                        txt_address.getText(),
+                        Double.parseDouble(txt_salary.getText())
+                ));
+                if (isSaved) {
+                    new Alert(Alert.AlertType.INFORMATION, "Successfull").show();
+                    loadCustomerTable();
+                    clearFields();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"Empty").show();
+                }
+            }catch (SQLIntegrityConstraintViolationException ex){
+                new Alert(Alert.AlertType.ERROR,"Duplicate Entity").show();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        }catch (SQLIntegrityConstraintViolationException ex){
-            new Alert(Alert.AlertType.ERROR,"Duplicate Entity").show();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         }else{
             new Alert(Alert.AlertType.ERROR,"Empty field found").show();
         }
@@ -170,46 +172,38 @@ public class CustomerFormController{
 
     public void updateButtonOnAction(ActionEvent actionEvent) {
         if(!isEmpty()) {
-            CustomerDto c = new CustomerDto(txt_id.getText(),
-                    txt_name.getText(),
-                    txt_address.getText(),
-                    Double.parseDouble(txt_salary.getText())
-            );
-            String sql = "update customer set name='" + c.getName() + "',address='" + c.getAddress() + "',salary=" + c.getSalary() + "where id='" + c.getId() + "'";
             try {
-                Statement stm = DBConnection.getInstance().getConnection().createStatement();
-                int result = stm.executeUpdate(sql);
-                if (result > 0) {
-                    new Alert(Alert.AlertType.INFORMATION, "Update successfully").show();
-                    loadCustomerTable();
-                    clearFields();
-                }
+                boolean isUpdate =  customerBo.updateCustomer(new CustomerDto(txt_id.getText(),
+                        txt_name.getText(),
+                        txt_address.getText(),
+                        Double.parseDouble(txt_salary.getText())
+                ));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-        }else {
-            new Alert(Alert.AlertType.ERROR,"Empty field found").show();
-        }
+    }else {
+        new Alert(Alert.AlertType.ERROR,"Empty field found").show();
+    }
+}
+
+public void backBtnOnAction(ActionEvent actionEvent) {
+    Stage stage = (Stage)tblCustomer.getScene().getWindow();
+    try {
+        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+    }catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    stage.show();
+}
+private  boolean isEmpty(){
+    if((txt_name.getText().isEmpty()||txt_id.getText().isEmpty()
+            ||txt_salary.getText().isEmpty()||txt_address.getText().isEmpty())){
+        return true;
+    }else {
+        return false;
     }
 
-    public void backBtnOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage)tblCustomer.getScene().getWindow();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.show();
-    }
-    private  boolean isEmpty(){
-        if((txt_name.getText().isEmpty()||txt_id.getText().isEmpty()
-                ||txt_salary.getText().isEmpty()||txt_address.getText().isEmpty())){
-            return true;
-        }else {
-            return false;
-        }
-
-    }
+}
 }

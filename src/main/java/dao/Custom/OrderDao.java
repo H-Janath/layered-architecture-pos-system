@@ -1,4 +1,4 @@
-package dao;
+package dao.Custom;
 
 import dto.OrderDto;
 import dto.tm.OrderDto2;
@@ -6,7 +6,7 @@ import dto.tm.OrderDto2;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface OrderModel {
+public interface OrderDao {
     boolean saveOrder(OrderDto dto) throws SQLException, ClassNotFoundException;
     OrderDto  lastOrder() throws SQLException, ClassNotFoundException;
 

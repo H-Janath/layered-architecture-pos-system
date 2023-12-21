@@ -18,12 +18,12 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import dao.CustomerModel;
-import dao.ItemModel;
-import dao.OrderModel;
-import dao.impl.CustomerModelImpl;
-import dao.impl.ItemModelImpl;
-import dao.impl.OrderModelImpl;
+import dao.Custom.CustomerDao;
+import dao.Custom.ItemDao;
+import dao.Custom.OrderDao;
+import dao.Custom.impl.CustomerDaoImpl;
+import dao.Custom.impl.ItemDaoImpl;
+import dao.Custom.impl.OrderDaoImpl;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -52,9 +52,9 @@ public class OrderFormController {
     double total=0;
     private ObservableList<OrderTm> tmList = FXCollections.observableArrayList();
 
-    private CustomerModel customer = new CustomerModelImpl();
-    private ItemModel item = new ItemModelImpl();
-    private OrderModel orderModel = new OrderModelImpl();
+    private CustomerDao customer = new CustomerDaoImpl();
+    private ItemDao item = new ItemDaoImpl();
+    private OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
         colDescription.setCellValueFactory(new TreeItemPropertyValueFactory<>("desc"));
@@ -102,7 +102,7 @@ public class OrderFormController {
 
     private void loadCustomerID() {
         try {
-            customers = customer.allCustomers();
+            customers = customer.allCustomer();
             ObservableList<String> list = FXCollections.observableArrayList();
             for(CustomerDto dto : customers){
                 list.add(dto.getId());
@@ -173,7 +173,7 @@ public class OrderFormController {
 
     public void genertateID(){
         try {
-            OrderDto dto = orderModel.lastOrder();
+            OrderDto dto = orderDao.lastOrder();
             if (dto!=null){
                 String id = dto.getOrderid();
                 int num = Integer.parseInt(id.split("[D]")[1]);
@@ -201,7 +201,7 @@ public class OrderFormController {
                 ));
             }
             if (!tmList.isEmpty()) {
-                boolean isSaved = orderModel.saveOrder(new OrderDto(
+                boolean isSaved = orderDao.saveOrder(new OrderDto(
                         lblOrderId.getText(),
                         LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")).toString(),
                         cmbCustId.getValue().toString(),
