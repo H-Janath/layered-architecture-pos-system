@@ -4,11 +4,14 @@ import db.DBConnection;
 import dto.OrderDto;
 import dao.OrderDetailsModel;
 import dao.OrderModel;
+import dto.tm.OrderDto2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderModelImpl implements OrderModel {
     OrderDetailsModel orderDetailsModel = new OrderDetailsModelImpl();
@@ -52,5 +55,21 @@ public class OrderModelImpl implements OrderModel {
             );
         }
         return null;
+    }
+    public List<OrderDto2> allOrders() throws SQLException, ClassNotFoundException {
+        List<OrderDto2> dtolist = new ArrayList<>();
+        String sql = "select * from orders";
+        PreparedStatement prstm  = DBConnection.getInstance().getConnection().prepareStatement(sql);
+        ResultSet result = prstm.executeQuery();
+        while (result.next()){
+            dtolist.add(
+                    new OrderDto2(
+                            result.getString(1),
+                            result.getString(2),
+                            result.getString(3)
+                    )
+            );
+        }
+        return dtolist;
     }
 }
