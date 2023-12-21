@@ -66,16 +66,6 @@ public class CustomerFormController{
         });
     }
 
-    private void setData(CustomerTm newvalue) {
-        if(newvalue!=null) {
-            txt_id.setEditable(false);
-            txt_id.setText(newvalue.getId());
-            txt_address.setText(newvalue.getAddress());
-            txt_name.setText(newvalue.getName());
-            txt_salary.setText(String.valueOf(newvalue.getSalary()));
-        }
-    }
-
     private void loadCustomerTable() {
         ObservableList<CustomerTm> tmlist = FXCollections.observableArrayList();
         try {
@@ -178,6 +168,12 @@ public class CustomerFormController{
                         txt_address.getText(),
                         Double.parseDouble(txt_salary.getText())
                 ));
+                if(isUpdate){
+                    new Alert(Alert.AlertType.INFORMATION,"update success").show();
+                    loadCustomerTable();
+                }else {
+                    new Alert(Alert.AlertType.ERROR,"update unsuccess").show();
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {

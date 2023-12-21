@@ -1,5 +1,6 @@
 package controller;
 
+import bo.custom.impl.ItemBoimpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
@@ -23,11 +24,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import dto.tm.ItemTm;
 
-import dao.Custom.ItemDao;
-import dao.Custom.impl.ItemDaoImpl;
-
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class ItemFormController {
@@ -67,9 +66,9 @@ public class ItemFormController {
 
     @FXML
     private JFXTextField txtUnitPrice;
-    ItemDao itemDao =new ItemDaoImpl();
+    ItemBoimpl itemBo = new ItemBoimpl();
 
-    public void initialize(){
+    public void initialize() throws SQLException, ClassNotFoundException {
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
         colDesc.setCellValueFactory(new TreeItemPropertyValueFactory<>("description"));
         colUnitPrice.setCellValueFactory(new TreeItemPropertyValueFactory<>("unitPrice"));
@@ -81,6 +80,7 @@ public class ItemFormController {
             if(event.getClickCount()==1&& (!tblItem.getSelectionModel().isEmpty())){
                 TreeItem<ItemTm> item = tblItem.getSelectionModel().getSelectedItem();
                 txtCode.setText(item.getValue().getCode());
+                txtCode.setEditable(false);
                 txtDesc.setText(item.getValue().getDescription());
                 txtUnitPrice.setText(String.valueOf(item.getValue().getUnitPrice()));
                 txtQty.setText(String.valueOf(item.getValue().getQty()));
@@ -100,57 +100,43 @@ public class ItemFormController {
         });
     }
 
-    private void loadItemTable() {
+    private void loadItemTable() throws SQLException, ClassNotFoundException {
         ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM item";
-
-        try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet result = stm.executeQuery(sql);
-
-            while (result.next()){
-                JFXButton btn = new JFXButton("Delete");
-
-                ItemTm tm = new ItemTm(
-                        result.getString(1),
-                        result.getString(2),
-                        result.getDouble(3),
-                        result.getInt(4),
-                        btn
-                );
-
-                btn.setOnAction(actionEvent -> {
-                    deleteItem(tm.getCode());
-                });
-
-                tmList.add(tm);
-            }
-
-            TreeItem<ItemTm> treeItem = new RecursiveTreeItem<>(tmList, RecursiveTreeObject::getChildren);
-            tblItem.setRoot(treeItem);
-            tblItem.setShowRoot(false);
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        List<ItemDto> itemDtos = itemBo.allItem();
+        for(ItemDto dto:itemDtos){
+            JFXButton btn = new JFXButton("Delete");
+            tmList.add(
+                    new ItemTm(
+                            dto.getCode(),
+                            dto.getDescription(),
+                            dto.getUnitPrice(),
+                            dto.getQty(),
+                            btn
+                    )
+            );
+            btn.setOnAction(ActionEvent->{
+                deleteItem(dto.getCode());
+            });
         }
+        TreeItem<ItemTm> treeItem = new RecursiveTreeItem<>(tmList, RecursiveTreeObject::getChildren);
+        tblItem.setRoot(treeItem);
+        tblItem.setShowRoot(false);
     }
 
     private void deleteItem(String code) {
-        String sql = "DELETE from item WHERE code=?";
-
+        boolean isDelete = false;
         try {
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1,code);
-            int result = pstm.executeUpdate();
-            if (result>0){
-                new Alert(Alert.AlertType.INFORMATION,"Item Deleted!").show();
+            isDelete = itemBo.deleteItem(code);
+            if(isDelete){
+                new Alert(Alert.AlertType.INFORMATION,"Delete successfully").show();
                 loadItemTable();
             }else{
-                new Alert(Alert.AlertType.ERROR,"Something went wrong!").show();
+                new Alert(Alert.AlertType.ERROR,"Delete unsuccessfully").show();
             }
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -173,49 +159,51 @@ public class ItemFormController {
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQty.getText())
         );
-        String sql = "INSERT INTO item VALUES(?,?,?,?)";
-
         try {
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1,dto.getCode());
-            pstm.setString(2,dto.getDescription());
-            pstm.setDouble(3,dto.getUnitPrice());
-            pstm.setInt(4,dto.getQty());
-            int result = pstm.executeUpdate();
-            if (result>0){
-                new Alert(Alert.AlertType.INFORMATION,"Item Saved!").show();
-                loadItemTable();
-//                clearFields();
+             boolean isSave = itemBo.saveItem(dto);
+             if(isSave){
+                 new Alert(Alert.AlertType.INFORMATION,"Saved").show();
+             }else {
+                 new Alert(Alert.AlertType.ERROR,"Saved unsuccessfully").show();
+             }
+        } catch (SQLException e) {
+             throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-
-        } catch (SQLIntegrityConstraintViolationException ex){
-            new Alert(Alert.AlertType.ERROR,"Duplicate Entry").show();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
         }else{
             new Alert(Alert.AlertType.ERROR,"Empty field found").show();
         }
     }
 
     @FXML
-    void updateButtonOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+    void updateButtonOnAction(ActionEvent event) {
         if(!isEmpty()) {
             ItemDto itemDto = new ItemDto(txtCode.getText(), txtDesc.getText(), Double.parseDouble(txtUnitPrice.getText()), Integer.parseInt(txtQty.getText()));
-            boolean isUpdated = itemDao.updateItem(itemDto);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.INFORMATION, "Update Success").show();
+            boolean isUpdated = false;
+            try {
+                isUpdated = itemBo.updateItem(itemDto);
+                if (isUpdated) {
+                    new Alert(Alert.AlertType.INFORMATION, "Update Success").show();
+                    loadItemTable();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"Update unsuccessfully").show();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }else {
             new Alert(Alert.AlertType.ERROR,"Empty field found").show();
         }
     }
-        private boolean isEmpty(){
-            if(txtQty.getText().isEmpty()||txtDesc.getText().isEmpty()||txtCode.getText().isEmpty()||txtUnitPrice.getText().isEmpty()){
-                return true;
-            }else {
-                return false;
-            }
-        }
+    private boolean isEmpty(){
+          if(txtQty.getText().isEmpty()||txtDesc.getText().isEmpty()||txtCode.getText().isEmpty()||txtUnitPrice.getText().isEmpty()){
+              return true;
+          }else {
+              return false;
+          }
+    }
 
 }

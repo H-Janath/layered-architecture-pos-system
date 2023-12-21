@@ -1,4 +1,8 @@
 package controller;
+import bo.custom.CustomerBo;
+import bo.custom.ItemBo;
+import bo.custom.impl.CustomerBoimpl;
+import bo.custom.impl.ItemBoimpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.CustomerDto;
@@ -18,10 +22,10 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import dao.Custom.CustomerDao;
+
 import dao.Custom.ItemDao;
 import dao.Custom.OrderDao;
-import dao.Custom.impl.CustomerDaoImpl;
+
 import dao.Custom.impl.ItemDaoImpl;
 import dao.Custom.impl.OrderDaoImpl;
 import java.io.IOException;
@@ -52,8 +56,8 @@ public class OrderFormController {
     double total=0;
     private ObservableList<OrderTm> tmList = FXCollections.observableArrayList();
 
-    private CustomerDao customer = new CustomerDaoImpl();
-    private ItemDao item = new ItemDaoImpl();
+    private CustomerBo customerBo = new CustomerBoimpl();
+    private ItemBo itemBo = new ItemBoimpl();
     private OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
@@ -87,7 +91,7 @@ public class OrderFormController {
 
     private void loadItemCodes() {
         try {
-            items = item.allItems();
+            items = itemBo.allItem();
             ObservableList<String> list = FXCollections.observableArrayList();
             for(ItemDto dto : items){
                 list.add(dto.getCode());
@@ -102,7 +106,7 @@ public class OrderFormController {
 
     private void loadCustomerID() {
         try {
-            customers = customer.allCustomer();
+            customers= customerBo.allCustomer();
             ObservableList<String> list = FXCollections.observableArrayList();
             for(CustomerDto dto : customers){
                 list.add(dto.getId());
@@ -115,20 +119,12 @@ public class OrderFormController {
         }
     }
 
-    public void backBtnOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage) cmbCustId.getScene().getWindow();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void addtoCartSetOnAction(ActionEvent actionEvent) {
         Object customer = cmbCustId.getValue();
             if(customer!=null){
                 try {
-                    double amount = item.getItem(cmbItemCode.getValue().toString()).getUnitPrice()*Integer.parseInt(txtQty.getText());
+                    double amount = itemBo.getItem(cmbItemCode.getValue().toString()).getUnitPrice()*Integer.parseInt(txtQty.getText());
                     JFXButton btn = new JFXButton("Delete");
                     OrderTm tm = new OrderTm(
                             cmbItemCode.getValue().toString(),
@@ -223,4 +219,13 @@ public class OrderFormController {
             return false;
         }
     }
+    public void backBtnOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) cmbCustId.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

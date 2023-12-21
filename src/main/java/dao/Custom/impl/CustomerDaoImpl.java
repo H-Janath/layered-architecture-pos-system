@@ -31,18 +31,14 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(Customer entity) throws SQLException, ClassNotFoundException {
-        String sql = "update from customer set name=? address=? salary=? where id=?";
+        String sql = "update customer set name=?, address=?, salary=? where id=?";
         PreparedStatement prstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
         prstm.setString(1,entity.getName());
         prstm.setString(2,entity.getAddress());
         prstm.setDouble(3,entity.getSalary());
         prstm.setString(4,entity.getId());
         int result = prstm.executeUpdate();
-        if(result>0) {
-            return true;
-        }else{
-            return false;
-        }
+        return (result>0);
     }
 
     @Override
