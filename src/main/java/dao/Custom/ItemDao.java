@@ -8,5 +8,5 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ItemDao extends CrudDao<Item> {
-    public ItemDto getItem(String code)throws SQLException, ClassNotFoundException;
+    ItemDto getItem(String code)throws SQLException, ClassNotFoundException;
 }
