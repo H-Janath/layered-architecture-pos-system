@@ -3,6 +3,7 @@ package dao.Custom.impl;
 import db.DBConnection;
 import dto.OrderDetailsDto;
 import dao.Custom.OrderDetailsDao;
+import entity.OrderDetails;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -29,15 +30,15 @@ public class OrderDetailsDaoImpl implements OrderDetailsDao {
         }
         return isDetailsSaved;
     }
-    public List<OrderDetailsDto> getOrderDetails(String orderId) throws SQLException, ClassNotFoundException {
+    public List<OrderDetails> getOrderDetails(String orderId) throws SQLException, ClassNotFoundException {
         String sql = "select * from orderdetail where orderid=?";
-        ObservableList<OrderDetailsDto> dtoList = FXCollections.observableArrayList();
+        ObservableList<OrderDetails> dtoList = FXCollections.observableArrayList();
         PreparedStatement prstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
         prstm.setString(1,orderId);
         ResultSet result =prstm.executeQuery();
         while (result.next()){
             dtoList.add(
-                    new OrderDetailsDto(
+                    new OrderDetails(
                             result.getString(1),
                             result.getString(2),
                             result.getInt(3),
@@ -47,5 +48,24 @@ public class OrderDetailsDaoImpl implements OrderDetailsDao {
         }
         return dtoList;
 
+    }
+    @Override
+    public boolean save(OrderDetails entity) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean update(OrderDetails entity) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String value) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public List<OrderDetails> getAll() throws SQLException, ClassNotFoundException {
+        return null;
     }
 }

@@ -166,6 +166,8 @@ public class ItemFormController {
              }else {
                  new Alert(Alert.AlertType.ERROR,"Saved unsuccessfully").show();
              }
+        }catch (SQLIntegrityConstraintViolationException ex){
+            new Alert(Alert.AlertType.ERROR,"Duplicate Entity").show();
         } catch (SQLException e) {
              throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

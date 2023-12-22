@@ -1,13 +1,17 @@
 package controller;
 
+import bo.custom.OrderDetailsBo;
+import bo.custom.impl.OrderDetailsBoimpl;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.OrderDetailsDto;
 import dto.tm.OrderDetailsTm;
-import dto.tm.OrderDto2;
+import dto.OrderDto;
+import dto.OrderDto2;
 import dto.tm.OrderTm2;
+import entity.Orders;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,7 +45,7 @@ public class OrderDetailsFormController {
     public TreeTableColumn colorderdetailsitemcode;
     public TreeTableColumn colorderdetailsqty;
     public TreeTableColumn colOrderdetailsUnitPrice;
-    OrderDetailsDao orderDetailsDao = new OrderDetailsDaoImpl();
+    OrderDetailsBo orderDetailsBo = new OrderDetailsBoimpl();
     OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
         colorderid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
@@ -62,7 +66,7 @@ public class OrderDetailsFormController {
                 TreeItem<OrderTm2> item = orderTbl.getSelectionModel().getSelectedItem();
                 try {
                     ObservableList<OrderDetailsTm> tmList = FXCollections.observableArrayList();
-                    List<OrderDetailsDto> dtoList = orderDetailsDao.getOrderDetails(item.getValue().getId());
+                    List<OrderDetailsDto> dtoList = orderDetailsBo.getOrderDetails(item.getValue().getId());
                     for(OrderDetailsDto dto:dtoList){
                         tmList.add(
                                 new OrderDetailsTm(
@@ -100,13 +104,13 @@ public class OrderDetailsFormController {
     private void loadOrderTable() {
         ObservableList<OrderTm2> tmList = FXCollections.observableArrayList();
         try {
-            List<OrderDto2> dtolist = orderDao.allOrders();
-            for(OrderDto2 orderTm2:dtolist){
+            List<OrderDto2> dtolist = orderDetailsBo.allOrders();
+            for(OrderDto2 order:dtolist){
                 tmList.add(
                         new OrderTm2(
-                                orderTm2.getId(),
-                                orderTm2.getDate(),
-                                orderTm2.getCustomerId()
+                                order.getId(),
+                                order.getDate(),
+                                order.getCustomerId()
                         )
                 );
             }

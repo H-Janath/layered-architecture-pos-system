@@ -1,15 +1,15 @@
 package controller;
 import bo.custom.CustomerBo;
 import bo.custom.ItemBo;
+import bo.custom.OrdersBo;
 import bo.custom.impl.CustomerBoimpl;
 import bo.custom.impl.ItemBoimpl;
+import bo.custom.impl.OrdersBoimpl;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import dto.CustomerDto;
-import dto.ItemDto;
-import dto.OrderDetailsDto;
-import dto.OrderDto;
+import dto.*;
 import dto.tm.OrderTm;
+import entity.Orders;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,11 +23,6 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import dao.Custom.ItemDao;
-import dao.Custom.OrderDao;
-
-import dao.Custom.impl.ItemDaoImpl;
-import dao.Custom.impl.OrderDaoImpl;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -58,7 +53,7 @@ public class OrderFormController {
 
     private CustomerBo customerBo = new CustomerBoimpl();
     private ItemBo itemBo = new ItemBoimpl();
-    private OrderDao orderDao = new OrderDaoImpl();
+    private OrdersBo orderBo = new OrdersBoimpl();
     public void initialize(){
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
         colDescription.setCellValueFactory(new TreeItemPropertyValueFactory<>("desc"));
@@ -169,9 +164,9 @@ public class OrderFormController {
 
     public void genertateID(){
         try {
-            OrderDto dto = orderDao.lastOrder();
+            OrderDto2 dto = orderBo.lastOrder();
             if (dto!=null){
-                String id = dto.getOrderid();
+                String id = dto.getId();
                 int num = Integer.parseInt(id.split("[D]")[1]);
                 num++;
                 lblOrderId.setText(String.format("D%03d",num));
@@ -197,7 +192,7 @@ public class OrderFormController {
                 ));
             }
             if (!tmList.isEmpty()) {
-                boolean isSaved = orderDao.saveOrder(new OrderDto(
+                boolean isSaved = orderBo.saveOrder(new OrderDto(
                         lblOrderId.getText(),
                         LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")).toString(),
                         cmbCustId.getValue().toString(),
@@ -205,6 +200,8 @@ public class OrderFormController {
                 ));
                 if (isSaved) {
                     new Alert(Alert.AlertType.INFORMATION, "Order Saved!").show();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"Order not Saved!").show();
                 }
             }
         }else {

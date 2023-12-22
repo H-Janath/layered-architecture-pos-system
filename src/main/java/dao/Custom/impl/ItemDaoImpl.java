@@ -62,11 +62,8 @@ public class ItemDaoImpl implements ItemDao {
         String sql = "delete from item where code=?";
         PreparedStatement prst = DBConnection.getInstance().getConnection().prepareStatement(sql);
         prst.setString(1,value);
-        int rst = prst.executeUpdate();
-        if(rst>0){
-            return true;
-        }
-        return false;
+        int result = prst.executeUpdate();
+        return result > 0;
     }
 
     @Override

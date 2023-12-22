@@ -3,14 +3,12 @@ package dto;
 import lombok.*;
 
 import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
 @ToString
-
-public class OrderDto {
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderDto{
     private String Orderid;
     private String date;
     private String custId;
