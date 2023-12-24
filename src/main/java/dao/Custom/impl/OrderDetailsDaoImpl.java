@@ -1,5 +1,7 @@
 package dao.Custom.impl;
 
+import dao.CrudDao;
+import dao.util.CrudUtil;
 import db.DBConnection;
 import dto.OrderDetailsDto;
 import dao.Custom.OrderDetailsDao;
@@ -7,6 +9,7 @@ import entity.OrderDetails;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,15 +21,7 @@ public class OrderDetailsDaoImpl implements OrderDetailsDao {
         boolean isDetailsSaved = true;
         for (OrderDetailsDto dto:list) {
             String sql = "INSERT INTO orderdetail VALUES(?,?,?,?)";
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1,dto.getOrderId());
-            pstm.setString(2,dto.getItemCode());
-            pstm.setInt(3,dto.getQty());
-            pstm.setDouble(4,dto.getUnitprice());
-
-            if(!(pstm.executeUpdate()>0)){
-                isDetailsSaved = false;
-            }
+            return CrudUtil.execute(sql,dto.getOrderId(),dto.getItemCode(),dto.getQty(),dto.getUnitprice());
         }
         return isDetailsSaved;
     }

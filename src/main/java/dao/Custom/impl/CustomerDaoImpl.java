@@ -1,12 +1,11 @@
 package dao.Custom.impl;
 
-import dao.util.CrudUtil;
-import db.DBConnection;
 import dao.Custom.CustomerDao;
+import dao.util.CrudUtil;
 import entity.Customer;
 
-import javax.print.DocFlavor;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

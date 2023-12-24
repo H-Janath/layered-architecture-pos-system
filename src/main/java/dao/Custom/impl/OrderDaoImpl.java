@@ -37,12 +37,7 @@ public class OrderDaoImpl implements OrderDao {
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
             String sql = "insert into orders values(?,?,?)";
-            PreparedStatement prstm = connection.prepareStatement(sql);
-            prstm.setString(1, entity.getId());
-            prstm.setString(2, entity.getDate());
-            prstm.setString(3, entity.getCustomerId());
-            int result =prstm.executeUpdate();
-            return result>0;
+            return CrudUtil.execute(sql,entity.getId(),entity.getDate(),entity.getCustomerId());
         } catch (SQLException | ClassNotFoundException ex) {
             connection.rollback();
         } finally {
@@ -65,8 +60,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Orders> getAll() throws SQLException, ClassNotFoundException {
         List<Orders> dtolist = new ArrayList<>();
         String sql = "select * from orders";
-        PreparedStatement prstm  = DBConnection.getInstance().getConnection().prepareStatement(sql);
-        ResultSet result = prstm.executeQuery();
+        ResultSet result= CrudUtil.execute(sql);
         while (result.next()){
             dtolist.add(
                     new Orders(
