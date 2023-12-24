@@ -1,5 +1,6 @@
 package dao.Custom.impl;
 
+import dao.util.CrudUtil;
 import db.DBConnection;
 import dao.Custom.OrderDetailsDao;
 import dao.Custom.OrderDao;
@@ -19,8 +20,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Orders lastOrder() throws SQLException, ClassNotFoundException {
         String sql = "select * from orders order by id desc limit 1";
-        PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet = CrudUtil.execute(sql);
         if(resultSet.next()){
             return new Orders(
                     resultSet.getString(1),

@@ -10,7 +10,7 @@ public class CrudUtil {
             return (T)pstm.executeQuery();
         }
         for (int i = 0; i <args.length ; i++) {
-            pstm.setObject((i+1),args[1]);
+            pstm.setObject((i+1),args[i]);
         }
         return (T)(Boolean)(pstm.executeUpdate()>0);
     }
