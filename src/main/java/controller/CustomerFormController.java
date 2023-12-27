@@ -1,9 +1,11 @@
 package controller;
+import bo.BoFactory;
 import bo.custom.CustomerBo;
 import bo.custom.impl.CustomerBoimpl;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.util.BoType;
 import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,7 +47,7 @@ public class CustomerFormController{
     private TextField txt_address;
 
 
-    private CustomerBo<CustomerDto> customerBo = new CustomerBoimpl();
+    private CustomerBo customerBo = BoFactory.getInstance().getBo(BoType.CUSTOMER);
 
     public void initialize() {
         colid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
@@ -71,7 +73,8 @@ public class CustomerFormController{
         try {
             List<CustomerDto> customerDtos = customerBo.allCustomer();
             for(CustomerDto customerDto:customerDtos){
-                Button btn = new Button("delete");
+                Button btn = new Button();
+                btn.setText("delete");
                 tmlist.add(new CustomerTm(
                         customerDto.getId(),
                         customerDto.getName(),
