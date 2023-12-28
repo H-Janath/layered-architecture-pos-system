@@ -1,6 +1,5 @@
 package dao.Custom.impl;
 
-import dao.CrudDao;
 import dao.util.CrudUtil;
 import db.DBConnection;
 import dto.OrderDetailsDto;
@@ -8,8 +7,6 @@ import dao.Custom.OrderDetailsDao;
 import entity.OrderDetails;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

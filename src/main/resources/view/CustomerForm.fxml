@@ -97,7 +97,7 @@
                         <Insets right="70.0" />
                     </GridPane.margin>
                 </JFXButton>
-            <JFXButton layoutX="644.0" layoutY="585.0" onAction="#reloadButtonOnAction" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #fc6c51;" text="Reload" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <JFXButton layoutX="644.0" layoutY="585.0" onAction="#reportButtonOnAction" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #fc6c51;" text="Report" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

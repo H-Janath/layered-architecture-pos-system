@@ -5,6 +5,8 @@ import dao.Custom.OrderDao;
 import dao.Custom.OrderDetailsDao;
 import dao.Custom.impl.OrderDaoImpl;
 import dao.Custom.impl.OrderDetailsDaoImpl;
+import dao.DaoFactory;
+import dao.util.DaoType;
 import dto.OrderDetailsDto;
 import dto.OrderDto2;
 import dto.OrderDto2;
@@ -16,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailsBoimpl implements OrderDetailsBo {
-    OrderDao orderDao = new OrderDaoImpl();
+    OrderDao orderDao = DaoFactory.getInstence().getDao(DaoType.ORDER);
+
     OrderDetailsDao orderDetailsDo = new OrderDetailsDaoImpl();
     public List<OrderDetailsDto>  getOrderDetails(String id) throws SQLException, ClassNotFoundException {
         List<OrderDetails> orderDetails= orderDetailsDo.getOrderDetails(id);

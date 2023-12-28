@@ -5,6 +5,6 @@ import entity.Orders;
 
 import java.sql.SQLException;
 
-public interface OrderDao extends CrudDao<Orders> {
+public interface OrderDao extends CrudDao<Orders>  {
     Orders lastOrder() throws SQLException, ClassNotFoundException;
 }

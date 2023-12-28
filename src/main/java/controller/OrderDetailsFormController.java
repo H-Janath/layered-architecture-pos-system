@@ -1,11 +1,13 @@
 package controller;
 
+import bo.BoFactory;
 import bo.custom.OrderDetailsBo;
 import bo.custom.impl.OrderDetailsBoimpl;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dao.util.BoType;
 import dto.OrderDetailsDto;
 import dto.tm.OrderDetailsTm;
 import dto.OrderDto;
@@ -45,7 +47,7 @@ public class OrderDetailsFormController {
     public TreeTableColumn colorderdetailsitemcode;
     public TreeTableColumn colorderdetailsqty;
     public TreeTableColumn colOrderdetailsUnitPrice;
-    OrderDetailsBo orderDetailsBo = new OrderDetailsBoimpl();
+    OrderDetailsBo orderDetailsBo = BoFactory.getInstance().getBo(BoType.ORDER_DETAIL);
     OrderDao orderDao = new OrderDaoImpl();
     public void initialize(){
         colorderid.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));

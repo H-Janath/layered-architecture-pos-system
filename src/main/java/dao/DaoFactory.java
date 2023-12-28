@@ -4,8 +4,11 @@ import bo.custom.impl.ItemBoimpl;
 import bo.custom.impl.OrderDetailsBoimpl;
 import bo.custom.impl.OrdersBoimpl;
 import dao.Custom.ItemDao;
+import dao.Custom.OrderDetailsDao;
 import dao.Custom.impl.CustomerDaoImpl;
 import dao.Custom.impl.ItemDaoImpl;
+import dao.Custom.impl.OrderDaoImpl;
+import dao.Custom.impl.OrderDetailsDaoImpl;
 import dao.util.DaoType;
 
 import java.lang.reflect.Type;
@@ -23,8 +26,8 @@ public class DaoFactory {
         switch (type){
             case CUSTOMER:return (T)new CustomerDaoImpl();
             case ITEM:return (T)new ItemDaoImpl();
-            case ORDERDETAILS:return (T)new OrderDetailsBoimpl();
-            case ORDER:return (T)new OrdersBoimpl();
+            case ORDERDETAILS:return (T)new OrderDetailsDaoImpl();
+            case ORDER:return (T)new OrderDaoImpl();
         }
         return null;
     }
