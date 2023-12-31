@@ -3,6 +3,10 @@ package dao.Custom.impl;
 import dao.Custom.CustomerDao;
 import dao.util.CrudUtil;
 import entity.Customer;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +18,17 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean save(Customer entity) throws SQLException, ClassNotFoundException {
-        String sql = "insert into customer value(?,?,?,?)";
-        boolean result = CrudUtil.execute(sql,entity.getId(),entity.getName(),entity.getAddress(),entity.getSalary());
-        return result;
+        Configuration configuration=new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Customer.class);
+
+       SessionFactory sessionFactory= configuration.buildSessionFactory();
+       Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(entity);
+        transaction.commit();
+        session.clear();
+        return true;
     }
 
     @Override
