@@ -21,7 +21,6 @@ public class CustomerDaoImpl implements CustomerDao {
         Configuration configuration=new Configuration()
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Customer.class);
-
        SessionFactory sessionFactory= configuration.buildSessionFactory();
        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -33,16 +32,32 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(Customer entity) throws SQLException, ClassNotFoundException {
-        String sql = "update customer set name=?, address=?, salary=? where id=?";
-        boolean result = CrudUtil.execute(sql,entity.getName(),entity.getAddress(),entity.getSalary(),entity.getId());
-        return result;
+        Configuration configuration = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Customer.class);
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Customer customer = session.find(Customer.class, entity.getId());
+        customer.setName(entity.getName());
+        customer.setAddress(entity.getAddress());
+        customer.setSalary(entity.getSalary());
+        session.save(customer);
+        transaction.commit();
+        return true;
     }
 
     @Override
     public boolean delete(String value) throws SQLException, ClassNotFoundException {
-        String sql = "delete from customer where id=?";
-        boolean result = CrudUtil.execute(sql,value);
-        return result;
+        Configuration configuration = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Customer.class);
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(session.find(Customer.class,value));
+        transaction.commit();
+        return true;
     }
 
     @Override

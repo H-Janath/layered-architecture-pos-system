@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemFormController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ItemFormController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
          <columnConstraints>
@@ -53,20 +53,19 @@
                   <JFXTextField fx:id="txtCode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label prefHeight="18.0" prefWidth="71.0" text="Item Code" GridPane.columnIndex="1" />
                   <JFXTextField fx:id="txtDesc" layoutX="10.0" layoutY="36.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label layoutX="10.0" layoutY="13.0" prefHeight="18.0" prefWidth="71.0" text="Description" GridPane.columnIndex="3" />
+                  <Label layoutX="10.0" layoutY="13.0" prefHeight="21.0" prefWidth="140.0" text="Description" GridPane.columnIndex="3" />
                   <Label prefHeight="18.0" prefWidth="71.0" text="Unit Price" GridPane.columnIndex="5" />
                   <JFXTextField fx:id="txtUnitPrice" layoutX="222.0" layoutY="36.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                   <Label layoutX="448.0" layoutY="13.0" prefHeight="18.0" prefWidth="71.0" text="QTY" GridPane.columnIndex="7" />
                   <JFXTextField fx:id="txtQty" layoutX="448.0" layoutY="36.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <JFXTextField fx:id="txtSearch" maxWidth="-Infinity" prefWidth="200.0" promptText="search" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
             <JFXTreeTableView fx:id="tblItem" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <columns>
                   <TreeTableColumn fx:id="colCode" maxWidth="-1.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Item Code" />
-                  <TreeTableColumn fx:id="colDesc" maxWidth="-1.0" minWidth="220.0" prefWidth="220.0" resizable="false" text="Description" />
-                  <TreeTableColumn fx:id="colUnitPrice" maxWidth="-1.0" minWidth="150.0" prefWidth="150.0" resizable="false" text="Unit Price" />
-                  <TreeTableColumn fx:id="colQty" maxWidth="-1.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="QTY on Hand" />
+                  <TreeTableColumn fx:id="colDesc" maxWidth="215.0" minWidth="188.0" prefWidth="188.0" resizable="false" text="Description" />
+                  <TreeTableColumn fx:id="colUnitPrice" maxWidth="182.0" minWidth="150.0" prefWidth="159.0" resizable="false" text="Unit Price" />
+                  <TreeTableColumn fx:id="colQty" maxWidth="123.0" minWidth="100.0" prefWidth="123.0" resizable="false" text="QTY on Hand" />
                   <TreeTableColumn fx:id="colOption" maxWidth="-1.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Option" />
                </columns>
             </JFXTreeTableView>
@@ -98,6 +97,19 @@
                   <Insets right="70.0" />
                </GridPane.margin>
             </JFXButton>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="txtSearch" />
+               </children>
+            </GridPane>
          </children>
       </GridPane>
    </center>

@@ -207,7 +207,6 @@ private  boolean isEmpty(){
     }else {
         return false;
     }
-
 }
 
     public void reportButtonOnAction(ActionEvent actionEvent) {
